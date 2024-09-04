@@ -2,12 +2,10 @@
 using BepInEx.Bootstrap;
 using HarmonyLib;
 using Photon.Pun;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 namespace ScoreboardTweaks
 {
@@ -15,7 +13,7 @@ namespace ScoreboardTweaks
     public class Main : BaseUnityPlugin
     {
         internal static Main m_hInstance = null;
-        internal static List<Text> m_listScoreboardTexts = new List<Text>();
+        internal static List<TextMeshPro> m_listScoreboardTexts = new List<TextMeshPro>();
         internal static Sprite m_spriteGizmoMuted = null;
         internal static Sprite m_spriteGizmoOriginal = null;
         internal static Material m_materialReportButtons = null;
@@ -54,21 +52,8 @@ namespace ScoreboardTweaks
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                return Path.Combine(BepInEx.Paths.PluginPath, ModConstants.ModConstants.modName);
             }
-        }
-    }
-
-    //[HarmonyPatch(typeof(GorillaNetworking.PhotonNetworkController))]
-    //[HarmonyPatch("AttemptDisconnect", MethodType.Normal)]
-    internal class OnRoomDisconnected
-    {
-        private static void Prefix()
-        {
-            try { Main.m_listScoreboardTexts.Clear(); } catch { }
         }
     }
 }
